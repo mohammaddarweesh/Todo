@@ -2,6 +2,22 @@ const express = require('express');
 const mysqlconnection = require('../connection');
 const Router = express.Router();
 
+Router.get('/:id', (req, res) => {
+    //const baseURL =  req.protocol + '://' + req.headers.host + req.url
+    if (req.params.id) {
+        mysqlconnection.query('SELECT * FROM todos where userid =' + req.params.id.toString(),(err, rows, fields)=>{
+            if (err) {
+                console.log(err);
+            }
+            else{
+                res.send(rows);
+            }
+        })
+    }else{
+        res.send('please provide user id')
+    }
+})
+
 Router.get('/details/:id', (req, res) => {
     if (req.params.id) {
         mysqlconnection.query('SELECT * FROM todos where id =' + req.params.id.toString(),(err, rows, fields)=>{
